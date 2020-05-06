@@ -27,10 +27,18 @@ buildscript {
 
 group = "name.nepavel"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+//java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated/src/main/java")
+        }
+    }
 }
 
 dependencies {
@@ -62,7 +70,7 @@ jooq {
     edition = JooqEdition.OpenSource
     version = "3.13.1"
     runConfig { jvmArgs = listOf("-Xmx2g") }
-//	resultHandler { println("The exit value of the code generation was: $exitValue") }
+    resultHandler { println("The exit value of the code generation was: $this") }
     logging = Logging.DEBUG
     jdbc {
         url = jooqUrl
@@ -74,6 +82,10 @@ jooq {
             isJavaTimeTypes = true
             isDaos = true
             isPojos = true
+            isNullableAnnotation = true
+            nullableAnnotationType = "javax.annotation.Nullable"
+            isNonnullAnnotation = true
+            nonnullAnnotationType = "javax.annotation.Nonnull"
         }
         database {
             inputSchema = "public"
@@ -110,3 +122,5 @@ tasks["jooq"].dependsOn(tasks["flywayMigrate"])
 tasks["jooq"].doLast {
     postgres.close()
 }
+
+tasks["compileKotlin"].dependsOn(tasks["jooq"])

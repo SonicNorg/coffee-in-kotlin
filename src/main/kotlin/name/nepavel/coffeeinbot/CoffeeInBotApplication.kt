@@ -1,12 +1,12 @@
 package name.nepavel.coffeeinbot
 
+import name.nepavel.coffeeinbot.tables.daos.BotUserDao
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
 
 @SpringBootApplication
 class CoffeeInBotApplication {
-
+	val userDto: BotUserDao = BotUserDao()
 
 }
 
