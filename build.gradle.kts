@@ -123,4 +123,12 @@ tasks["jooq"].doLast {
     postgres.close()
 }
 
+tasks["test"].doFirst {
+    try {
+        postgres.close()
+    } catch (e: Exception) {
+        //ignore
+    }
+}
+
 tasks["compileKotlin"].dependsOn(tasks["jooq"])
